@@ -1,7 +1,7 @@
 
 # Error-Catcher-Strong
 
-**Error-Catcher-Strong** is a comprehensive error-handling library for Node.js and Express applications. It provides custom error classes, middleware for centralized error handling, and utilities for logging errors and managing unhandled exceptions.
+**Error-Catcher-Strong** is a comprehensive error-catcher-strong library for Node.js and Express applications. It provides custom error classes, middleware for centralized error handling, and utilities for logging errors and managing unhandled exceptions.
 
 ## Features
 
@@ -15,7 +15,7 @@
 To install the package, use npm:
 
 ```bash
-npm install Error-Catcher-Strong
+npm install error-catcher-strong
 ```
 
 ## Usage
@@ -29,7 +29,7 @@ The package includes several custom error classes that extend a base `AppError` 
 The `AppError` class is the base class for all errors in the package. It takes a message, status code, and optional details.
 
 ```javascript
-const { AppError } = require('Error-Catcher-Strong');
+const { AppError } = require('error-catcher-strong');
 
 const error = new AppError('Something went wrong', 500);
 console.log(error.message); // "Something went wrong"
@@ -42,7 +42,7 @@ console.log(error.status); // "error"
 The `ValidationError` class extends `AppError` and adds a `field` property for tracking validation-specific errors.
 
 ```javascript
-const { ValidationError } = require('Error-Catcher-Strong');
+const { ValidationError } = require('error-catcher-strong');
 
 const error = new ValidationError('Invalid input', 'email', { expected: 'email format' });
 console.log(error.message); // "Invalid input"
@@ -55,7 +55,7 @@ console.log(error.details); // { expected: 'email format' }
 The `AuthError` class extends `AppError` and is used for authentication-related errors.
 
 ```javascript
-const { AuthError } = require('Error-Catcher-Strong');
+const { AuthError } = require('error-catcher-strong');
 
 const error = new AuthError('Authentication failed');
 console.log(error.message); // "Authentication failed"
@@ -67,7 +67,7 @@ console.log(error.statusCode); // 401
 The `DatabaseError` class is used for database-related errors and accepts an optional `query` string.
 
 ```javascript
-const { DatabaseError } = require('Error-Catcher-Strong');
+const { DatabaseError } = require('error-catcher-strong');
 
 const error = new DatabaseError('Database connection failed', 'SELECT * FROM users');
 console.log(error.message); // "Database connection failed"
@@ -84,7 +84,7 @@ In your `app.js` or `server.js`, import the middleware and use it in your Expres
 
 ```javascript
 const express = require('express');
-const { globalErrorHandler } = require('Error-Catcher-Strong');
+const { globalErrorHandler } = require('error-catcher-strong');
 
 const app = express();
 
@@ -112,7 +112,7 @@ The logging utility writes errors to a log file. You can use it to log critical 
 #### Example: Logging Errors
 
 ```javascript
-const { logError } = require('Error-Catcher-Strong');
+const { logError } = require('error-catcher-strong');
 
 try {
   throw new Error('Something bad happened');
@@ -174,4 +174,4 @@ This package is licensed under the [MIT License](LICENSE).
 
 ---
 
-This README provides a comprehensive guide to using your error-handling package with usage examples for the different classes and middleware, ensuring that users can easily integrate and customize the package for their Node.js and Express applications.
+This README provides a comprehensive guide to using your error-catcher-strong package with usage examples for the different classes and middleware, ensuring that users can easily integrate and customize the package for their Node.js and Express applications.
