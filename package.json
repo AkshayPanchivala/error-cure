@@ -1,0 +1,38 @@
+{
+  "name": "error-catcher-strong",
+  "version": "1.0.0",
+  "description": "Error-Catcher-Strong is a lightweight Node.js library for robust error management. It features custom error classes like AppError and ValidationError, Express middleware for centralized error handling, and utilities for logging and managing exceptions. Ideal for building scalable, resilient APIs with clean, structured error-handling in Node.js and Express environments.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "babel src -d dist",
+    "prepublishOnly": "npm run test"
+  },
+  "keywords": [
+    "error-catcher-strong",
+    "error-handling",
+    "nodejs",
+    "express"
+  ],
+  "author": "Akshay Panchivala",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AkshayPanchivala/error-catcher-strong"
+  },
+  "homepage": "https://github.com/AkshayPanchivala/error-catcher-strong#readme",
+  "jest": {
+    "testMatch": [
+      "**/tests/**/*.test.js",
+      "**/?(*.)+(spec|test).[tj]s?(x)"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "jest": "^29.7.0",
+    "path": "^0.12.7"
+  }
+}
