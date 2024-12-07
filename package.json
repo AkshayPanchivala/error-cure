@@ -1,6 +1,6 @@
 {
   "name": "error-catcher-strong",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Error-Catcher-Strong is a lightweight Node.js library for robust error management. It features custom error classes like AppError and ValidationError, Express middleware for centralized error handling, and utilities for logging and managing exceptions. Ideal for building scalable, resilient APIs with clean, structured error-handling in Node.js and Express environments.",
   "main": "src/index.js",
   "scripts": {
