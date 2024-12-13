@@ -173,5 +173,3 @@ Contributions are welcome! Please fork the repository, make changes, and submit 
 This package is licensed under the [MIT License](LICENSE).
 
 ---
-
-This README provides a comprehensive guide to using your error-catcher-strong package with usage examples for the different classes and middleware, ensuring that users can easily integrate and customize the package for their Node.js and Express applications.
