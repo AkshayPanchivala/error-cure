@@ -8,6 +8,7 @@ const logError = (error) => {
   fs.appendFile(logPath, logMessage, (err) => {
     if (err) console.error('Failed to write to log file:', err);
   });
+  console.error(error);
 
 };
 
