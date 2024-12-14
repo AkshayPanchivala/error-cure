@@ -1,13 +1,14 @@
-const logError = require('./logError');
+// const logError = require('./logError');
 
 // Define a function to handle unhandled rejections
 const handleUnhandledRejections = () => {
   process.on('unhandledRejection', (reason) => {
-    logError(`Unhandled Rejection: ${reason}`);
+    // logError(`Unhandled Rejection: ${reason}`);
+    // console.log(reason)
   });
 
   process.on('uncaughtException', (err) => {
-    logError(`Uncaught Exception: ${err.message}`);
+    // logError(`Uncaught Exception: ${err.message}`);
     process.exit(1); // Exit process after logging
   });
 };
