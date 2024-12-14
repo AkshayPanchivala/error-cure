@@ -4,6 +4,7 @@ const AuthError = require('./errors/AuthError');
 const DatabaseError = require('./errors/DatabaseError');
 const NotFoundError = require('./errors/NotFoundError');
 const globalErrorHandler = require('./middleware/globalErrorHandler');
+const handleUnhandledRejections=require("./utils/handleRejections")
 
 module.exports = {
   AppError,
@@ -12,4 +13,5 @@ module.exports = {
   DatabaseError,
   NotFoundError,
   globalErrorHandler,
+  handleUnhandledRejections
 };
