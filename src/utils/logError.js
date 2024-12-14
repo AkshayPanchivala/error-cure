@@ -9,7 +9,6 @@ const logError = (error) => {
     if (err) console.error('Failed to write to log file:', err);
   });
 
-  console.error(error);
 };
 
 module.exports = logError;
