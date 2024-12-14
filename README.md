@@ -16,8 +16,6 @@
 
 ## Installation
 
-## Installation
-
 To get started, install the package using npm or yarn:
 
 ```bash
