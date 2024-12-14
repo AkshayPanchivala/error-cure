@@ -1,19 +1,21 @@
-// const logError = require('./logError');
+// handleRejections.js (utils)
 
-// Define a function to handle unhandled rejections
+const logError = (message) => {
+  // Optionally, replace this with a logger library like Winston
+  console.error(message);
+};
+
 const handleUnhandledRejections = () => {
-  process.on('unhandledRejection', (reason) => {
-    // logError(`Unhandled Rejection: ${reason}`);
-    // console.log(reason)
+  process.on('unhandledRejection', (reason, promise) => {
+    logError(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
+    // Optionally, terminate the process (useful in production)
+    process.exit(1); 
   });
 
   process.on('uncaughtException', (err) => {
-    // logError(`Uncaught Exception: ${err.message}`);
-    process.exit(1); // Exit process after logging
+    logError(`Uncaught Exception: ${err.message}`);
+    process.exit(1); // Exit process after logging the uncaught exception
   });
 };
 
-// Export the function for external use
-module.exports = {
-  handleUnhandledRejections,
-};
+module.exports = handleUnhandledRejections;
