@@ -1,7 +1,4 @@
-const logError = require('../utils/logError');
-
 const globalErrorHandler = (err, req, res, next) => {
-  logError(err);
 
   if (err.isOperational) {
     res.status(err.statusCode).json({
