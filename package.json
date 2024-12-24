@@ -1,6 +1,6 @@
 {
   "name": "error-cure",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Error-Cure is a lightweight Node.js library for efficient error management. It includes custom error classes like AppError and ValidationError, Express middleware for centralized error handling, and utilities for logging and managing exceptions. Ideal for building scalable, resilient APIs with clean and structured error-handling in Node.js and Express applications.",
   "main": "src/index.js",
   "scripts": {
