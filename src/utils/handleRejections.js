@@ -1,6 +1,4 @@
-const logError = (message) => {
-  console.error(message);
-};
+const logError = require('./logError');
 
 const handleUnhandledRejections = () => {
   process.on('unhandledRejection', (reason, promise) => {
