@@ -2,7 +2,7 @@
 
 [![NPM Version](https://img.shields.io/npm/v/error-cure.svg)](https://www.npmjs.com/package/error-cure)
 [![NPM Downloads](https://img.shields.io/npm/dm/error-cure.svg)](https://www.npmjs.com/package/error-cure)
-[![License](https://img.shields.io/npm/l/error-cure.svg)](https://github.com/your-username/error-cure/blob/main/LICENSE.txt)
+[![License](https://img.shields.io/npm/l/error-cure.svg)](https://github.com/AkshayPanchivala/error-cure/blob/main/LICENSE.txt)
 
 ## 🚀 Project Description & Value Proposition
 
@@ -247,7 +247,7 @@ We welcome contributions to `Error-Cure`! To contribute, please follow these ste
 1.  **Fork the repository.**
 2.  **Clone your forked repository:**
     ```bash
-    git clone https://github.com/your-username/error-cure.git
+    git clone https://github.com/AkshayPanchivala/error-cure.git
     cd error-cure
     ```
 3.  **Create a new branch** for your feature or bug fix:
@@ -272,8 +272,8 @@ Please ensure your code adheres to the existing style and conventions.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.github.com/your-username/error-cure/blob/main/LICENSE.txt) file for details.
+This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.github.com/AkshayPanchivala/error-cure/blob/main/LICENSE.txt) file for details.
 
-## 🔑 Keywords (for NPM SEO)
+## 🔑 Keywords 
 
 `error-handling`, `express-middleware`, `node.js`, `error-management`, `custom-errors`, `api-errors`, `unhandled-rejection`, `uncaught-exception`, `logging`, `middleware`, `express`, `api`, `backend`, `javascript`, `nodejs`, `error-logger`, `production-ready`, `developer-tools`
