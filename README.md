@@ -1,216 +1,279 @@
-# Error-Cure
+# Error-Cure: Advanced Error Handling for Node.js & Express
 
-**Error-Cure** is a robust library for handling errors in Node.js and Express applications. It simplifies error management by providing custom error classes, middleware for centralized error handling, and utilities for logging errors and managing unhandled exceptions.
+[![NPM Version](https://img.shields.io/npm/v/error-cure.svg)](https://www.npmjs.com/package/error-cure)
+[![NPM Downloads](https://img.shields.io/npm/dm/error-cure.svg)](https://www.npmjs.com/package/error-cure)
+[![License](https://img.shields.io/npm/l/error-cure.svg)](https://github.com/your-username/error-cure/blob/main/LICENSE.txt)
 
----
+## 🚀 Project Description & Value Proposition
 
-## Features
+`Error-Cure` is a robust and comprehensive Node.js package designed to streamline and standardize error handling in your Express.js applications. Say goodbye to inconsistent error responses, unhandled exceptions, and difficult-to-debug issues. `Error-Cure` provides a suite of custom error classes, a powerful global error-handling middleware, and utilities for logging and managing unhandled promise rejections, ensuring your applications are resilient, maintainable, and user-friendly.
 
-- **Custom Error Classes**: Includes `AppError`, `ValidationError`, `AuthError`, and more to cover diverse use cases.
-- **Global Error Handler Middleware**: Simplifies error handling in Express.js applications.
-- **Error Logging Utilities**: Write errors to log files for better debugging and analysis.
-- **Unhandled Exception Management**: Tools to handle unhandled promise rejections and uncaught exceptions.
-- **Lightweight & Extendable**: Easy to integrate and customize for your application.
+With `Error-Cure`, you can:
+- **Centralize Error Management:** Handle all application errors in one place, ensuring consistent responses.
+- **Improve Debuggability:** Differentiate between operational errors (e.g., invalid input) and programming errors (e.g., bugs).
+- **Enhance User Experience:** Provide clear, meaningful error messages to your API consumers without exposing sensitive details.
+- **Increase Application Stability:** Gracefully manage unhandled promise rejections and uncaught exceptions, preventing application crashes.
+- **Accelerate Development:** Reduce boilerplate code for error handling, allowing you to focus on core business logic.
 
----
+## ✨ Features
 
-## Installation
+-   **Custom Error Classes:**
+    -   `AppError`: Base class for all operational errors, allowing custom messages, status codes, and details.
+    -   `ValidationError`: Specifically for input validation failures (HTTP 400).
+    -   `AuthError`: For authentication and authorization issues (HTTP 401).
+    -   `NotFoundError`: For resources not found (HTTP 404).
+    -   `DatabaseError`: For database-related operation failures (HTTP 500).
+-   **Global Express Error Handling Middleware:** Catches all errors in your Express application and sends appropriate, environment-aware responses.
+-   **Error Logging Utility (`logError`):** A simple utility to log errors to a file, aiding in debugging and monitoring.
+-   **Unhandled Rejection Management:** Automatically handles `unhandledRejection` and `uncaughtException` events, logging them and gracefully shutting down the process.
 
-To get started, install the package using npm or yarn:
+## 📦 Installation
 
+Install `Error-Cure` in your project using either npm or yarn:
+
+**Using npm:**
 ```bash
 npm install error-cure
 ```
 
-or
-
+**Using yarn:**
 ```bash
 yarn add error-cure
 ```
 
----
+## 📂 Directory Structure Overview
 
-## Usage
+```
+error-cure/
+├── src/
+│   ├── index.js             # Main entry point (exports all modules)
+│   ├── errors/
+│   │   ├── AppError.js      # Base custom error class
+│   │   ├── AuthError.js     # Authentication specific error
+│   │   ├── DataBaseError.js # Database specific error
+│   │   ├── NotFoundError.js # Resource not found error
+│   │   └── ValidationError.js # Validation specific error
+│   ├── middleware/
+│   │   └── globalErrorHandler.js # Express global error handling middleware
+│   └── utils/
+│       ├── handleRejections.js # Utility for unhandled promise rejections
+│       └── logError.js      # Utility for logging errors
+└── ...
+```
+
+## 💡 Usage Examples
 
 ### 1. Custom Error Classes
 
-Error-Cure includes several custom error classes that extend a base `AppError` class. These can classify and handle different types of errors efficiently.
-
-#### Example: AppError
-
-The `AppError` class is the base for all errors in the package. It accepts a message, status code, and optional details.
+Import the error classes you need:
 
 ```javascript
-const { AppError } = require('error-cure');
-
-const error = new AppError('Something went wrong', 500);
-console.log(error.message); // "Something went wrong"
-console.log(error.statusCode); // 500
-console.log(error.status); // "error"
+const {
+  AppError,
+  ValidationError,
+  AuthError,
+  NotFoundError,
+  DatabaseError,
+} = require('error-cure');
 ```
 
-#### Example: ValidationError
+#### `AppError` (Base Operational Error)
 
-The `ValidationError` class tracks validation-specific errors.
+Use `AppError` for general operational errors with custom messages and status codes.
 
 ```javascript
-const { ValidationError } = require('error-cure');
+// Example: Custom error with a specific status code and details
+throw new AppError('Invalid API key provided', 403, {
+  errorCode: 'API_KEY_INVALID',
+  suggestedAction: 'Check your API key and try again.',
+});
 
-const error = new ValidationError('Invalid input', 'email', { expected: 'email format' });
-console.log(error.message); // "Invalid input"
-console.log(error.field); // "email"
-console.log(error.details); // { expected: 'email format' }
+// Example: Generic server error
+throw new AppError('Something went wrong on our server.', 500);
 ```
 
-#### Example: AuthError
+#### `ValidationError`
 
-The `AuthError` class handles authentication-related errors.
+Use `ValidationError` for input validation failures. It includes a `field` property for more specific error reporting.
 
 ```javascript
-const { AuthError } = require('error-cure');
+// Example: Missing required field
+throw new ValidationError('Name is required', 'name');
 
-const error = new AuthError('Authentication failed');
-console.log(error.message); // "Authentication failed"
-console.log(error.statusCode); // 401
+// Example: Invalid email format with additional details
+throw new ValidationError('Invalid email format', 'email', {
+  reason: 'Email must contain @ and .',
+  receivedValue: 'invalid-email',
+});
 ```
 
-#### Example: DatabaseError
+#### `AuthError`
 
-The `DatabaseError` class handles database-related errors and accepts an optional query string.
+Use `AuthError` for authentication or authorization issues. Defaults to a 401 status code.
 
 ```javascript
-const { DatabaseError } = require('error-cure');
+// Example: User not logged in
+throw new AuthError('You are not logged in! Please log in to get access.');
 
-const error = new DatabaseError('Database connection failed', 'SELECT * FROM users');
-console.log(error.message); // "Database connection failed"
-console.log(error.query); // "SELECT * FROM users"
+// Example: Invalid credentials
+throw new AuthError('Incorrect email or password.');
 ```
 
----
+#### `NotFoundError`
 
-### 2. Global Error Handler Middleware
+Use `NotFoundError` when a requested resource cannot be found.
 
-The global error handler middleware is designed for Express.js applications. It formats errors and sends appropriate responses.
+```javascript
+// Example: User not found
+throw new NotFoundError('User'); // Message will be "User not found"
 
-#### Example: Express Integration
+// Example: Product with specific ID not found
+throw new NotFoundError('Product with ID 123'); // Message will be "Product with ID 123 not found"
+```
 
-In your `app.js` or `server.js` file:
+#### `DatabaseError`
+
+Use `DatabaseError` for issues related to database operations.
+
+```javascript
+// Example: Database connection failed
+throw new DatabaseError('Failed to connect to the database.', 'CONNECT_DB');
+
+// Example: Invalid SQL query
+throw new DatabaseError('Invalid SQL query.', 'SELECT * FROM users WHERE id = "abc"');
+```
+
+### 2. Global Express Error Handling Middleware
+
+Integrate `globalErrorHandler` into your Express application. It should be the **last** middleware added.
 
 ```javascript
 const express = require('express');
-const { globalErrorHandler } = require('error-cure');
+const { AppError } = require('error-cure');
+const globalErrorHandler = require('error-cure/src/middleware/globalErrorHandler'); // Adjust path if needed
 
 const app = express();
 
-// Example route that throws an error
-app.get('/', (req, res, next) => {
-  const error = new Error('Something went wrong!');
-  error.statusCode = 500;
-  next(error);
+// Example route that throws an AppError
+app.get('/api/v1/users/:id', (req, res, next) => {
+  if (req.params.id === 'invalid') {
+    return next(new AppError('User ID is invalid.', 400));
+  }
+  res.status(200).json({
+    status: 'success',
+    data: { user: { id: req.params.id, name: 'John Doe' } },
+  });
 });
 
-// Global error handling middleware
+// Example route that throws a generic error (caught by global handler)
+app.get('/api/v1/products', (req, res, next) => {
+  // Simulate a programming error
+  const data = undefined.property; // This will throw a TypeError
+  res.json(data);
+});
+
+// Handle all unhandled routes (404)
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
+
+// GLOBAL ERROR HANDLER - MUST BE LAST MIDDLEWARE
 app.use(globalErrorHandler);
 
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 ```
 
-The middleware formats and returns the error response based on whether it’s operational or not.
+### 3. Error Logging Utility (`logError`)
 
----
-
-### 3. Error Logging Utility
-
-The logging utility writes errors to a log file for debugging.
-
-#### Example: Logging Errors
+The `logError` utility writes error details to a file named `error.log` in the `logs` directory at your project root. It's automatically used by `globalErrorHandler` and `handleUnhandledRejections`. You can also use it directly.
 
 ```javascript
-const { logError } = require('error-cure');
+const { logError } = require('error-cure/src/utils/logError'); // Adjust path if needed
 
 try {
-  throw new Error('Something bad happened');
+  // Some risky operation
+  throw new Error('This is a custom error to be logged.');
 } catch (err) {
   logError(err);
+  // You might also send a response or perform other actions
 }
 ```
 
-This will append the error to an `error.log` file in the project root directory.
+### 4. Unhandled Rejection and Uncaught Exception Handling
 
----
-
-### 4. Handle Unhandled Rejections & Exceptions
-
-Error-Cure provides utilities to handle unhandled promise rejections and uncaught exceptions globally.
-
-#### Example: Handling Unhandled Rejections
-
-In your `index.js` or `app.js` file:
+It's crucial to handle unhandled promise rejections and uncaught exceptions to prevent your Node.js process from crashing. `Error-Cure` provides a utility for this. Call `handleUnhandledRejections()` once, typically at the very beginning of your `server.js` or `app.js` file.
 
 ```javascript
-const { handleUnhandledRejections } = require('error-cure');
+const handleUnhandledRejections = require('error-cure/src/utils/handleRejections'); // Adjust path if needed
 
-// Automatically handle unhandled promise rejections
+// Call this function at the very top of your main application file
 handleUnhandledRejections();
+
+// Your application code follows...
+const app = require('./app'); // Assuming your Express app is in app.js
+const PORT = process.env.PORT || 3000;
+
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+// Example of an unhandled promise rejection
+process.nextTick(() => {
+  Promise.reject(new Error('Something went very wrong! (Unhandled Rejection)'));
+});
+
+// Example of an uncaught exception
+process.nextTick(() => {
+  throw new Error('This is an uncaught exception!');
+});
 ```
 
-This ensures that unhandled promise rejections are logged and processed correctly.
+## ⚙️ Best Practices: Production vs. Development
 
----
+The `globalErrorHandler` automatically adapts its response based on the `NODE_ENV` environment variable:
 
-## Testing
+-   **Development (`NODE_ENV=development`):** Provides detailed error information, including stack traces, to aid in debugging.
+-   **Production (`NODE_ENV=production`):** Sends minimal, user-friendly error messages to prevent leaking sensitive internal details. Programming errors will result in a generic "An unexpected error occurred!" message.
 
-To ensure the package works as expected, run tests using the following command:
+**Always set `NODE_ENV` appropriately in your deployment environment.**
 
-```bash
-npm test
-```
+## 🤝 Contributing
 
-#### Running Tests with Jest
+We welcome contributions to `Error-Cure`! To contribute, please follow these steps:
 
-If you have Jest configured, run:
+1.  **Fork the repository.**
+2.  **Clone your forked repository:**
+    ```bash
+    git clone https://github.com/your-username/error-cure.git
+    cd error-cure
+    ```
+3.  **Create a new branch** for your feature or bug fix:
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+    or
+    ```bash
+    git checkout -b bugfix/issue-description
+    ```
+4.  **Make your changes.**
+5.  **Write tests** for your changes (if applicable) and ensure all existing tests pass.
+6.  **Run linting and formatting checks.**
+7.  **Commit your changes** with a clear and concise commit message.
+8.  **Push your branch** to your forked repository:
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+9.  **Open a Pull Request** to the `main` branch of the original `error-cure` repository.
 
-```bash
-npx jest
-```
+Please ensure your code adheres to the existing style and conventions.
 
-Write tests for each error class and utility to maintain robustness.
+## 📄 License
 
----
+This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.github.com/your-username/error-cure/blob/main/LICENSE.txt) file for details.
 
-## Contributing
+## 🔑 Keywords (for NPM SEO)
 
-We welcome contributions! Follow these steps:
-
-1. Fork the repository.
-2. Clone your fork.
-3. Create a new branch for your feature or bug fix.
-4. Commit your changes and push the branch.
-5. Submit a pull request.
-
-Please adhere to our [Code of Conduct](CODE_OF_CONDUCT.md).
-
----
-
-## License
-
-Error-Cure is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-## Keywords
-
-Node.js, Express, error handling, middleware, error classes, global error handling, logging, unhandled exceptions, validation errors, authentication errors.
-
----
-
-## Links
-
-- [GitHub Repository](https://github.com/AkshayPanchivala/error-cure)
-
----
-
-Simplify and strengthen error handling in your Node.js and Express applications with **Error-Cure**. Get started today!
-
+`error-handling`, `express-middleware`, `node.js`, `error-management`, `custom-errors`, `api-errors`, `unhandled-rejection`, `uncaught-exception`, `logging`, `middleware`, `express`, `api`, `backend`, `javascript`, `nodejs`, `error-logger`, `production-ready`, `developer-tools`
