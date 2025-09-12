@@ -1,280 +1,163 @@
-# Error-Cure: Advanced Error Handling for Node.js & Express
+# 🚀 Error-Cure: The Ultimate Error Handling Solution for Node.js & Express
 
 [![NPM Version](https://img.shields.io/npm/v/error-cure.svg)](https://www.npmjs.com/package/error-cure)
 [![NPM Downloads](https://img.shields.io/npm/dm/error-cure.svg)](https://www.npmjs.com/package/error-cure)
 [![License](https://img.shields.io/npm/l/error-cure.svg)](https://github.com/AkshayPanchivala/error-cure/blob/main/LICENSE.txt)
+[![Build Status](https://github.com/AkshayPanchivala/error-cure/workflows/test_on_pr_merge/badge.svg)](https://github.com/AkshayPanchivala/error-cure/actions)
+[![Coverage Status](https://coveralls.io/repos/github/AkshayPanchivala/error-cure/badge.svg?branch=main)](https://coveralls.io/github/AkshayPanchivala/error-cure?branch=main)
 
-## 🚀 Project Description & Value Proposition
+**Tired of messy error handling, inconsistent API responses, and fragile Node.js applications? `Error-Cure` is your one-stop solution for building robust, production-ready, and developer-friendly APIs with Express.**
 
-`Error-Cure` is a robust and comprehensive Node.js package designed to streamline and standardize error handling in your Express.js applications. Say goodbye to inconsistent error responses, unhandled exceptions, and difficult-to-debug issues. `Error-Cure` provides a suite of custom error classes, a powerful global error-handling middleware, and utilities for logging and managing unhandled promise rejections, ensuring your applications are resilient, maintainable, and user-friendly.
+`Error-Cure` provides a comprehensive suite of tools to streamline your error handling workflow, from custom error classes to a powerful global middleware. It's designed to be lightweight, easy to use, and highly configurable, allowing you to focus on what matters most: building great applications.
 
-With `Error-Cure`, you can:
-- **Centralize Error Management:** Handle all application errors in one place, ensuring consistent responses.
-- **Improve Debuggability:** Differentiate between operational errors (e.g., invalid input) and programming errors (e.g., bugs).
-- **Enhance User Experience:** Provide clear, meaningful error messages to your API consumers without exposing sensitive details.
-- **Increase Application Stability:** Gracefully manage unhandled promise rejections and uncaught exceptions, preventing application crashes.
-- **Accelerate Development:** Reduce boilerplate code for error handling, allowing you to focus on core business logic.
+## 🤔 Why Error-Cure?
+
+| Feature                  | Benefit                                                                                             |
+| ------------------------ | --------------------------------------------------------------------------------------------------- |
+| **Centralized Handling** | Manage all errors in one place, ensuring consistent and predictable API responses.                  |
+| **Improved Debugging**   | Differentiate between operational errors (user-facing) and programming errors (internal bugs).      |
+| **Enhanced User Experience** | Provide clear, meaningful error messages to your users without exposing sensitive stack traces. |
+| **Increased Stability**  | Gracefully handle unhandled promise rejections and uncaught exceptions to prevent crashes.          |
+| **Accelerated Development** | Reduce boilerplate code and focus on your core application logic.                                   |
+| **TypeScript & JS Support** | Seamlessly integrate with both TypeScript and JavaScript projects (CommonJS & ESM).               |
 
 ## ✨ Features
 
--   **Custom Error Classes:**
-    -   `AppError`: Base class for all operational errors, allowing custom messages, status codes, and details.
-    -   `ValidationError`: Specifically for input validation failures (HTTP 400).
-    -   `AuthError`: For authentication and authorization issues (HTTP 401).
-    -   `NotFoundError`: For resources not found (HTTP 404).
-    -   `DatabaseError`: For database-related operation failures (HTTP 500).
--   **Global Express Error Handling Middleware:** Catches all errors in your Express application and sends appropriate, environment-aware responses.
--   **Error Logging Utility (`logError`):** A simple utility to log errors to a file, aiding in debugging and monitoring.
--   **Unhandled Rejection Management:** Automatically handles `unhandledRejection` and `uncaughtException` events, logging them and gracefully shutting down the process.
--   **TypeScript Support:** Written in TypeScript with type definitions included.
--   **CommonJS and ESM Support:** Can be used in both CommonJS and ES Module projects.
+-   **🔪 Custom Error Classes:** A set of pre-built, extensible error classes for common scenarios:
+    -   `AppError`: The base class for all operational errors.
+    -   `ValidationError`: For input validation failures (400).
+    -   `AuthError`: For authentication/authorization issues (401).
+    -   `NotFoundError`: For missing resources (404).
+    -   `DatabaseError`: For database-related failures (500).
+-   **🛡️ Global Error Middleware:** A powerful Express middleware that catches all errors and sends beautiful, environment-aware responses.
+-   **📝 Error Logging:** A simple yet effective utility to log errors to a file for easy debugging and monitoring.
+-   **🚨 Unhandled Rejection/Exception Handling:** Automatically catches and logs unhandled promise rejections and uncaught exceptions.
+-   **✅ TypeScript Ready:** Written entirely in TypeScript with type definitions included.
+-   **📦 Dual Module Support:** Supports both CommonJS (`require`) and ES Modules (`import`).
 
 ## 📦 Installation
 
-Install `Error-Cure` in your project using either npm or yarn:
-
-**Using npm:**
 ```bash
+# Using npm
 npm install error-cure
-```
 
-**Using yarn:**
-```bash
+# Using yarn
 yarn add error-cure
 ```
 
-## 📂 Directory Structure Overview
+## 📂 Project Structure
 
 ```
 error-cure/
+├── dist/
+│   ├── cjs/                # CommonJS output
+│   └── esm/                # ES Module output
 ├── src/
-│   ├── index.ts             # Main entry point (exports all modules)
+│   ├── index.ts            # Main entry point
 │   ├── errors/
-│   │   ├── AppError.ts      # Base custom error class
-│   │   ├── AuthError.ts     # Authentication specific error
-│   │   ├── DataBaseError.ts # Database specific error
-│   │   ├── NotFoundError.ts # Resource not found error
-│   │   └── ValidationError.ts # Validation specific error
+│   │   ├── AppError.ts
+│   │   ├── AuthError.ts
+│   │   ├── DataBaseError.ts
+│   │   ├── NotFoundError.ts
+│   │   └── ValidationError.ts
 │   ├── middleware/
-│   │   └── globalErrorHandler.ts # Express global error handling middleware
+│   │   └── globalErrorHandler.ts
 │   └── utils/
-│       ├── handleRejections.ts # Utility for unhandled promise rejections
-│       └── logError.ts      # Utility for logging errors
+│       ├── handleRejections.ts
+│       └── logError.ts
+├── tests/
 └── ...
 ```
 
-## 💡 Usage Examples
+## 💡 Usage
 
-### 1. Custom Error Classes
+`Error-Cure` is designed to be intuitive and easy to integrate. Here’s how you can use it in your projects:
 
-Import the error classes you need:
-
-```typescript
-import {
-  AppError,
-  ValidationError,
-  AuthError,
-  NotFoundError,
-  DatabaseError,
-} from 'error-cure';
-```
-
-#### `AppError` (Base Operational Error)
-
-Use `AppError` for general operational errors with custom messages and status codes.
+### ES Modules (`import`/`export`)
 
 ```typescript
-// Example: Custom error with a specific status code and details
-throw new AppError('Invalid API key provided', 403, {
-  errorCode: 'API_KEY_INVALID',
-  suggestedAction: 'Check your API key and try again.',
-});
-
-// Example: Generic server error
-throw new AppError('Something went wrong on our server.', 500);
-```
-
-#### `ValidationError`
-
-Use `ValidationError` for input validation failures. It includes a `field` property for more specific error reporting.
-
-```typescript
-// Example: Missing required field
-throw new ValidationError('Name is required', 'name');
-
-// Example: Invalid email format with additional details
-throw new ValidationError('Invalid email format', 'email', {
-  reason: 'Email must contain @ and .',
-  receivedValue: 'invalid-email',
-});
-```
-
-#### `AuthError`
-
-Use `AuthError` for authentication or authorization issues. Defaults to a 401 status code.
-
-```typescript
-// Example: User not logged in
-throw new AuthError('You are not logged in! Please log in to get access.');
-
-// Example: Invalid credentials
-throw new AuthError('Incorrect email or password.');
-```
-
-#### `NotFoundError`
-
-Use `NotFoundError` when a requested resource cannot be found.
-
-```typescript
-// Example: User not found
-throw new NotFoundError('User'); // Message will be "User not found"
-
-// Example: Product with specific ID not found
-throw new NotFoundError('Product with ID 123'); // Message will be "Product with ID 123 not found"
-```
-
-#### `DatabaseError`
-
-Use `DatabaseError` for issues related to database operations.
-
-```typescript
-// Example: Database connection failed
-throw new DatabaseError('Failed to connect to the database.', 'CONNECT_DB');
-
-// Example: Invalid SQL query
-throw new DatabaseError('Invalid SQL query.', 'SELECT * FROM users WHERE id = "abc"');
-```
-
-### 2. Global Express Error Handling Middleware
-
-Integrate `globalErrorHandler` into your Express application. It should be the **last** middleware added.
-
-```typescript
+// app.ts
 import express from 'express';
-import { AppError, globalErrorHandler } from 'error-cure';
+import { AppError, globalErrorHandler, handleUnhandledRejections } from 'error-cure';
+
+// Handle unhandled rejections and exceptions
+handleUnhandledRejections();
 
 const app = express();
 
-// Example route that throws an AppError
-app.get('/api/v1/users/:id', (req, res, next) => {
-  if (req.params.id === 'invalid') {
-    return next(new AppError('User ID is invalid.', 400));
+app.get('/users/:id', (req, res, next) => {
+  if (req.params.id === '0') {
+    return next(new AppError('Invalid user ID.', 400));
   }
-  res.status(200).json({
-    status: 'success',
-    data: { user: { id: req.params.id, name: 'John Doe' } },
-  });
+  res.json({ id: req.params.id, name: 'John Doe' });
 });
 
-// Example route that throws a generic error (caught by global handler)
-app.get('/api/v1/products', (req, res, next) => {
-  // Simulate a programming error
-  const data = (undefined as any).property; // This will throw a TypeError
-  res.json(data);
-});
-
-// Handle all unhandled routes (404)
+// Handle 404 errors
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
-// GLOBAL ERROR HANDLER - MUST BE LAST MIDDLEWARE
+// Global error handling middleware (must be last)
 app.use(globalErrorHandler);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(3000, () => console.log('Server running on port 3000'));
 ```
 
-### 3. Error Logging Utility (`logError`)
+### CommonJS (`require`/`module.exports`)
 
-The `logError` utility writes error details to a file named `error.log` in the `logs` directory at your project root. It's automatically used by `globalErrorHandler` and `handleUnhandledRejections`. You can also use it directly.
+```javascript
+// server.js
+const express = require('express');
+const { AppError, globalErrorHandler, handleUnhandledRejections } = require('error-cure');
 
-```typescript
-import { logError } from 'error-cure';
-
-try {
-  // Some risky operation
-  throw new Error('This is a custom error to be logged.');
-} catch (err) {
-  logError(err as Error);
-  // You might also send a response or perform other actions
-}
-```
-
-### 4. Unhandled Rejection and Uncaught Exception Handling
-
-It's crucial to handle unhandled promise rejections and uncaught exceptions to prevent your Node.js process from crashing. `Error-Cure` provides a utility for this. Call `handleUnhandledRejections()` once, typically at the very beginning of your `server.ts` or `app.ts` file.
-
-```typescript
-import { handleUnhandledRejections } from 'error-cure';
-
-// Call this function at the very top of your main application file
+// Handle unhandled rejections and exceptions
 handleUnhandledRejections();
 
-// Your application code follows...
-// const app = require('./app'); // Assuming your Express app is in app.ts
-// const PORT = process.env.PORT || 3000;
+const app = express();
 
-// const server = app.listen(PORT, () => {
-//   console.log(`Server running on port ${PORT}`);
-// });
-
-// Example of an unhandled promise rejection
-process.nextTick(() => {
-  Promise.reject(new Error('Something went very wrong! (Unhandled Rejection)'));
+app.get('/users/:id', (req, res, next) => {
+  if (req.params.id === '0') {
+    return next(new AppError('Invalid user ID.', 400));
+  }
+  res.json({ id: req.params.id, name: 'John Doe' });
 });
 
-// Example of an uncaught exception
-process.nextTick(() => {
-  throw new Error('This is an uncaught exception!');
+// Handle 404 errors
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
+
+// Global error handling middleware (must be last)
+app.use(globalErrorHandler);
+
+app.listen(3000, () => console.log('Server running on port 3000'));
 ```
 
-## ⚙️ Best Practices: Production vs. Development
+## ⚙️ Configuration
 
 The `globalErrorHandler` automatically adapts its response based on the `NODE_ENV` environment variable:
 
--   **Development (`NODE_ENV=development`):** Provides detailed error information, including stack traces, to aid in debugging.
--   **Production (`NODE_ENV=production`):** Sends minimal, user-friendly error messages to prevent leaking sensitive internal details. Programming errors will result in a generic "An unexpected error occurred!" message.
+-   **`development`:** Provides detailed error information, including stack traces.
+-   **`production`:** Sends minimal, user-friendly error messages.
 
-**Always set `NODE_ENV` appropriately in your deployment environment.**
+**Always set `NODE_ENV=production` in your production environment.**
 
 ## 🤝 Contributing
 
-We welcome contributions to `Error-Cure`! To contribute, please follow these steps:
+Contributions are welcome! Please follow these steps:
 
-1.  **Fork the repository.**
-2.  **Clone your forked repository:**
-    ```bash
-    git clone https://github.com/AkshayPanchivala/error-cure.git
-    cd error-cure
-    ```
-3.  **Create a new branch** for your feature or bug fix:
-    ```bash
-    git checkout -b feature/your-feature-name
-    ```
-    or
-    ```bash
-    git checkout -b bugfix/issue-description
-    ```
-4.  **Make your changes.**
-5.  **Write tests** for your changes (if applicable) and ensure all existing tests pass.
-6.  **Run linting and formatting checks.**
-7.  **Commit your changes** with a clear and concise commit message.
-8.  **Push your branch** to your forked repository:
-    ```bash
-    git push origin feature/your-feature-name
-    ```
-9.  **Open a Pull Request** to the `main` branch of the original `error-cure` repository.
-
-Please ensure your code adheres to the existing style and conventions.
+1.  Fork the repository.
+2.  Create a new branch (`git checkout -b feature/your-feature`).
+3.  Make your changes and add tests.
+4.  Ensure all tests pass (`npm test`).
+5.  Commit your changes (`git commit -m 'feat: Add some feature'`).
+6.  Push to the branch (`git push origin feature/your-feature`).
+7.  Open a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.github.com/AkshayPanchivala/error-cure/blob/main/LICENSE.txt) file for details.
+This project is licensed under the MIT License. See the [LICENSE.txt](LICENSE.txt) file for details.
 
-## 🔑 Keywords 
+## 🔑 Keywords
 
-`error-handling`, `express-middleware`, `node.js`, `error-management`, `custom-errors`, `api-errors`, `unhandled-rejection`, `uncaught-exception`, `logging`, `middleware`, `express`, `api`, `backend`, `javascript`, `nodejs`, `error-logger`, `production-ready`, `developer-tools`, `typescript`
+`error-handling`, `express`, `node.js`, `middleware`, `error-management`, `custom-errors`, `api-errors`, `unhandled-rejection`, `uncaught-exception`, `logging`, `typescript`, `javascript`, `commonjs`, `esm`, `express-middleware`, `nodejs`, `error-logger`, `production-ready`, `developer-tools`, `api`, `backend`, `rest-api`, `error-response`, `json-errors`
