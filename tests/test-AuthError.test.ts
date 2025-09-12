@@ -1,7 +1,7 @@
-const AuthError = require('../src/errors/AuthError');
+import AuthError from '../src/errors/AuthError';
 
 test('should create an AuthError instance', () => {
-  const error = new AuthError('Authentication failed', 401);
+  const error = new AuthError('Authentication failed');
   expect(error.message).toBe('Authentication failed');
   expect(error.statusCode).toBe(401);
   expect(error.status).toBe('fail');

@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+import * as fs from 'fs';
+import * as path from 'path';
 
-const logError = (error) => {
+const logError = (error: Error) => {
   const logDir = path.join(__dirname, '../../logs');
   if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir, { recursive: true });
@@ -16,4 +16,4 @@ const logError = (error) => {
 
 };
 
-module.exports = logError;
+export default logError;

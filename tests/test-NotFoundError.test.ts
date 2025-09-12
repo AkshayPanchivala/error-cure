@@ -1,4 +1,4 @@
-const NotFoundError = require('../src/errors/NotFoundError');
+import NotFoundError from '../src/errors/NotFoundError';
 
 test('should create a NotFoundError instance', () => {
   const error = new NotFoundError('Resource');
