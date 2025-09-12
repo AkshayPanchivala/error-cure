@@ -1,7 +1,7 @@
-const ValidationError = require('../src/errors/ValidationError');
+import ValidationError from '../src/errors/ValidationError';
 
 test('should create a ValidationError instance', () => {
-  const error = new ValidationError('Validation failed', 400, { field: 'value' });
+  const error = new ValidationError('Validation failed', 'field', { field: 'value' });
   expect(error.message).toBe('Validation failed');
   expect(error.statusCode).toBe(400);
   expect(error.status).toBe('fail');

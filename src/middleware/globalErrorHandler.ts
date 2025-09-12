@@ -1,6 +1,8 @@
-const logError = require('../utils/logError');
+import { Request, Response, NextFunction } from 'express';
+import AppError from '../errors/AppError';
+import logError from '../utils/logError';
 
-const sendErrorDev = (err, res) => {
+const sendErrorDev = (err: AppError, res: Response) => {
   res.status(err.statusCode).json({
     status: err.status,
     error: err,
@@ -10,7 +12,7 @@ const sendErrorDev = (err, res) => {
   });
 };
 
-const sendErrorProd = (err, res) => {
+const sendErrorProd = (err: AppError, res: Response) => {
   // Operational, trusted error: send message to client
   if (err.isOperational) {
     res.status(err.statusCode).json({
@@ -28,7 +30,7 @@ const sendErrorProd = (err, res) => {
   }
 };
 
-const globalErrorHandler = (err, req, res, next) => {
+const globalErrorHandler = (err: AppError, req: Request, res: Response, next: NextFunction) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
@@ -37,11 +39,8 @@ const globalErrorHandler = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
-    // In a real application, you might want to create a copy of the error
-    // and handle specific types of errors (e.g., CastError, ValidationError, etc.)
-    // before sending the response. For this example, we'll use the original error.
     sendErrorProd(err, res);
   }
 };
 
-module.exports = globalErrorHandler;
+export default globalErrorHandler;

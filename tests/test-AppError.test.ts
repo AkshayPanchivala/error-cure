@@ -1,4 +1,4 @@
-const AppError = require('../src/errors/AppError');
+import AppError from '../src/errors/AppError';
 
 test('should create an AppError instance', () => {
   const error = new AppError('Test error', 400);

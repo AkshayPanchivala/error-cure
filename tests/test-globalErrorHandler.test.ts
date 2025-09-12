@@ -1,9 +1,12 @@
-const globalErrorHandler = require('../src/middleware/globalErrorHandler');
-const AppError = require('../src/errors/AppError');
+import globalErrorHandler from '../src/middleware/globalErrorHandler';
+import AppError from '../src/errors/AppError';
+import { Request, Response, NextFunction } from 'express';
 
 describe('globalErrorHandler', () => {
-  let mockReq, mockRes, mockNext;
-  let consoleErrorSpy;
+  let mockReq: Partial<Request>;
+  let mockRes: Partial<Response>;
+  let mockNext: NextFunction;
+  let consoleErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     mockReq = {};
@@ -26,7 +29,7 @@ describe('globalErrorHandler', () => {
   test('should send detailed error in development environment', () => {
     process.env.NODE_ENV = 'development';
     const err = new AppError('Test Error', 400);
-    globalErrorHandler(err, mockReq, mockRes, mockNext);
+    globalErrorHandler(err, mockReq as Request, mockRes as Response, mockNext);
 
     expect(mockRes.status).toHaveBeenCalledWith(400);
     expect(mockRes.json).toHaveBeenCalledWith({
@@ -41,7 +44,7 @@ describe('globalErrorHandler', () => {
   test('should send operational error in production environment', () => {
     process.env.NODE_ENV = 'production';
     const err = new AppError('Operational Error', 401);
-    globalErrorHandler(err, mockReq, mockRes, mockNext);
+    globalErrorHandler(err, mockReq as Request, mockRes as Response, mockNext);
 
     expect(mockRes.status).toHaveBeenCalledWith(401);
     expect(mockRes.json).toHaveBeenCalledWith({
@@ -54,7 +57,7 @@ describe('globalErrorHandler', () => {
   test('should send generic error for programming errors in production', () => {
     process.env.NODE_ENV = 'production';
     const err = new Error('Programming Error');
-    globalErrorHandler(err, mockReq, mockRes, mockNext);
+    globalErrorHandler(err as AppError, mockReq as Request, mockRes as Response, mockNext);
 
     expect(mockRes.status).toHaveBeenCalledWith(500);
     expect(mockRes.json).toHaveBeenCalledWith({
