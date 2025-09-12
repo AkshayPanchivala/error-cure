@@ -3,8 +3,7 @@
 [![NPM Version](https://img.shields.io/npm/v/error-cure.svg)](https://www.npmjs.com/package/error-cure)
 [![NPM Downloads](https://img.shields.io/npm/dm/error-cure.svg)](https://www.npmjs.com/package/error-cure)
 [![License](https://img.shields.io/npm/l/error-cure.svg)](https://github.com/AkshayPanchivala/error-cure/blob/main/LICENSE.txt)
-[![Build Status](https://github.com/AkshayPanchivala/error-cure/workflows/test_on_pr_merge/badge.svg)](https://github.com/AkshayPanchivala/error-cure/actions)
-[![Coverage Status](https://coveralls.io/repos/github/AkshayPanchivala/error-cure/badge.svg?branch=main)](https://coveralls.io/github/AkshayPanchivala/error-cure?branch=main)
+
 
 **Tired of messy error handling, inconsistent API responses, and fragile Node.js applications? `Error-Cure` is your one-stop solution for building robust, production-ready, and developer-friendly APIs with Express.**
 
